@@ -16,30 +16,13 @@ int numPaginas;
 /* No. de referencias. */
 int numReferencias;
 /* Arreglo que contendrá las referencias ingresadas */
-int paginas[numPaginas];
+int *paginas;
 /* Matriz que simulará la memoria dinámica, el es tamaño definido por
  * el usuario por medio de
  */
-void iniciarMatriz(int matriz[numPaginas][numReferencias]);
-void insertarReferencia();
 
-int main() {
-	printf("Ingrese el Numero de paginas que desea -> ");
-	scanf("%d", &numPaginas);
-	printf("\n");
-	printf("Ingrese el Numero de referencias que desea -> ");
-	scanf("%d", &numReferencias);
-	printf("\n");
-	int matriz [numPaginas][numReferencias];
-	// Llena la matriz
-	iniciarMatriz(matriz);
-	/* Imprime la matriz */
 
-	system("PAUSE");
-	return 0;
-}
-
-void iniciarMatriz(int matriz[][]){
+void iniciarMatriz(int **matriz){
 	for(int i = 0; i < numPaginas; i++){
 		for(int j = 0; j < numReferencias; j++){
 			// Inicia los valores en la referencia 1
@@ -69,11 +52,11 @@ void iniciarMatriz(int matriz[][]){
  * Este procedimiento imprime la matriz en pantalla
  * indicando el No. de páginas y los valores que va tomando.
  */
-void imprimirMatriz(int m[numPaginas][numReferencias]){
+void imprimirMatrizPrincipal(int **matriz){
 	for(int i = 0; i < numPaginas; i++){
 		printf("Pagina %d -> ",i+1);
 		for(int j = 0; j < numReferencias; j++){
-			printf("%d\t",m[i][j]);
+			printf("%d\t",matriz[i][j]);
 		}
 		printf("\n");
 	}
@@ -82,6 +65,37 @@ void imprimirMatriz(int m[numPaginas][numReferencias]){
 void insertaReferencia(){
 	for(int i = 0; i < numPaginas; i++){
 		printf("Ingrese la referencia No. %d -> ",i+1);
-		scanf("%d",paginas[i]);
+		scanf("%d",&paginas[i]);
 	}
 }
+
+
+
+int main() {
+
+	int **matriz;
+
+
+	printf("Ingrese el Numero de paginas que desea -> ");
+	scanf("%d", &numPaginas);
+	printf("\n");
+	printf("Ingrese el Numero de referencias que desea -> ");
+	scanf("%d", &numReferencias);
+	printf("\n");
+	//int matriz [numPaginas][numReferencias];
+	// Llena la matriz
+    paginas = new int [numPaginas];
+	matriz = new int *[numPaginas];
+	   for (int i = 0;i < numPaginas;i++ ){
+		   matriz[i]= new int [numReferencias];
+	   }
+
+
+	iniciarMatriz(matriz);
+	/* Imprime la matriz */
+
+	system("PAUSE");
+	return 0;
+}
+
+
