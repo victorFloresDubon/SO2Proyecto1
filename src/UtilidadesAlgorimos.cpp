@@ -1,23 +1,23 @@
 /*
- * AcÃ¡ definimos las utilidades que nos permitirÃ¡n controlar
+ * Acá definimos las utilidades que nos permitirán controlar
  * las entradas y las salidas de los datos que vayamos ingresando.
  */
 #include <iostream>
 #include <stdio.h>
 /* Definimos constantes para identificar el tipo de algoritmo a los cuales
- * serÃ¡n sometidos algunos mÃ©todos en este programa
+ * serán sometidos algunos métodos en este programa
  */
-#define OPT  1;
-#define FIFO 2;
-#define LRU  3;
+const int OPT = 1;
+const int FIFO = 2;
+const int LRU = 3;
 using namespace std;
 
 /*
- * MÃ©todo para imprimir la matriz en pantalla.
+ * Método para imprimir la matriz en pantalla.
  *
  * mat        -> Apuntador a la matriz actual.
- * numPaginas -> No. de marcos de pÃ¡gina, esto servirÃ¡ como lÃ­mite para las filas.
- * numPaginas -> No. de referencias, esto servirÃ¡ como lÃ­mite para las columnas.
+ * numPaginas -> No. de marcos de página, esto servirá como límite para las filas.
+ * numPaginas -> No. de referencias, esto servirá como límite para las columnas.
  */
 void imprimeMatriz(int **mat, int numPaginas, int numReferencias){
 	for(int i = 0; i < numPaginas; i++){
@@ -29,10 +29,10 @@ void imprimeMatriz(int **mat, int numPaginas, int numReferencias){
 	}
 }
 /*
- * MÃ©todo que nos permite ir insertando las referencias.
+ * Método que nos permite ir insertando las referencias.
  *
  * referencias    -> Vector al cual insertaremos dichas referencias.
- * numReferencias ->  No. de referencias, esto servirÃ¡ como lÃ­mite para el bucle.
+ * numReferencias ->  No. de referencias, esto servirá como límite para el bucle.
  */
 void insertarReferencias(int *referencias, int numReferencias){
 	for(int i = 0; i < numReferencias; i++){

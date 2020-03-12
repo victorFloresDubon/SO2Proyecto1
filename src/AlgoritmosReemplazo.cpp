@@ -13,7 +13,7 @@ using namespace std;
 
 int **matriz,*paginas,*fallos;
 
-void LRU(int numPaginas,int numReferencias){
+void lru(int numPaginas,int numReferencias){
 	/* Creamos la matriz que representa la memoria asignada */
 	matriz = new int *[numPaginas];
 	for (int i = 0; i < numPaginas; i++){

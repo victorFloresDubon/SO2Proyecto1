@@ -6,8 +6,8 @@
 #ifndef ALGORITMOSREEMPLAZO_H_
 #define ALGORITMOSREEMPLAZO_H_
 
-void OPT(int numPaginas,int numReferencias);
-void FIFO(int numPaginas,int numReferencias);
-void LRU(int numPaginas,int numReferencias);
+void opt(int numPaginas,int numReferencias);
+void fifo(int numPaginas,int numReferencias);
+void lru(int numPaginas,int numReferencias);
 
 #endif /* ALGORITMOSREEMPLAZO_H_ */
