@@ -23,7 +23,12 @@ void imprimeMatriz(int **mat, int numPaginas, int numReferencias){
 	for(int i = 0; i < numPaginas; i++){
 		printf("PAGINA %d -> ",i+1);
 		for(int j = 0; j < numReferencias; j++){
-			printf("%d\t",mat[i][j]);
+			if (mat[i][j] == -1){
+				printf(" \t");
+			}else{
+				printf("%d\t",mat[i][j]);
+			}
+
 		}
 		printf("\n");
 	}
@@ -71,5 +76,29 @@ void iniciarMatriz(int **mat, int numPaginas, int numReferencias){
 	}
 }
 
+/* Esta función nos permite buscar una página dentro de las referancias que hemos
+ * ingresado previamente, debemos especificar el tipo de búsqueda para cada algoritmo
+ * Si es:
+ *  Optimo -> 1
+ *  FIFO   -> 2
+ *  LRU    -> 3
+ */
+bool buscar(int *referencias,int **matriz_a_buscar,int pagActual, int tipo){
+	bool encontrado = false;
+	switch(tipo){
+	case OPT:
+		break;
+	case FIFO:
+		break;
+	case LRU:
+		for(int i = 0; i < sizeof(referencias); i++){
+			if(referencias[pagActual] == matriz_a_buscar[i][pagActual]){
+				encontrado = true;
+			}
+		}
+		break;
+	}
+	return encontrado;
+}
 
 
