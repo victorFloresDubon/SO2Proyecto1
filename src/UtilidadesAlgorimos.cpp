@@ -41,5 +41,35 @@ void insertarReferencias(int *referencias, int numReferencias){
 	}
 }
 
+/**
+ * Operación que inicia la matriz en la primera columna
+ * con los valores: 1, 2, 3, 4.  De lo contrario las llenará con valor -1
+ */
+void iniciarMatriz(int **mat, int numPaginas, int numReferencias){
+	for(int i = 0; i < numPaginas; i++){
+		for(int j = 0; j < numReferencias; j++){
+			// Inicia los valores en la referencia 1
+			if (j == 0){
+				switch(i){
+				case 0:
+					mat[i][j] = 1;
+					break;
+				case 1:
+					mat[i][j] = 2;
+					break;
+				case 2:
+					mat[i][j] = 3;
+					break;
+				case 3:
+					mat[i][j] = 4;
+					break;
+				}
+			}else{
+				mat[i][j] = -1;
+			}
+		}
+	}
+}
+
 
 
