@@ -22,7 +22,7 @@ void LRU(int numPaginas,int numReferencias){
 	/* Seguidamente creamos las referencias que vayamos a ingresar */
 	paginas = new int[numPaginas];
 	/* Adicional, también creamos el vector para manejar los fallos */
-	fallos = new int[numPaginas];
+	fallos = new int[numPaginas];//
 	/* Insertamos las referencias
 	imprimeMatriz(matriz,numPaginas,numReferencias);
 }
