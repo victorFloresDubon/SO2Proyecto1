@@ -75,29 +75,48 @@ void insertaReferencia(){
 int main() {
 
 	int **matriz;
-
-
-	printf("Ingrese el Numero de paginas que desea -> ");
-	scanf("%d", &numPaginas);
-	printf("\n");
-	printf("Ingrese el Numero de referencias que desea -> ");
-	scanf("%d", &numReferencias);
-	printf("\n");
-	LRU(numPaginas,numReferencias);
-	//int matriz [numPaginas][numReferencias];
-	// Llena la matriz
-    paginas = new int [numPaginas];
-	matriz = new int *[numPaginas];
-	   for (int i = 0;i < numPaginas;i++ ){
-		   matriz[i]= new int [numReferencias];
-	   }
-
-
-	iniciarMatriz(matriz);
-	/* Imprime la matriz */
-
-	system("PAUSE");
+	menu();
 	return 0;
 }
 
+
+void menu(){
+	int opc = 0;
+	do{
+		printf("Algoritmos de Reemplazo de paginas\n");
+		printf("===================================\n");
+		printf("\n");
+		printf("Escoja el algoritmo que desea ejecutar\n");
+		printf("1.\t\t Optimo\n");
+		printf("2.\t\t FIFO\n");
+		printf("3.\t\t LRU\n");
+		printf("4.\t\t Salir\n");
+		printf("-> ");
+		scanf("%d",opc);
+		if (opc != 4){
+			printf("Ingrese el Numero de paginas que desea -> ");
+			scanf("%d", &numPaginas);
+			printf("\n");
+			printf("Ingrese el Numero de referencias que desea -> ");
+			scanf("%d", &numReferencias);
+			printf("\n");
+
+			LRU(numPaginas,numReferencias);
+			//int matriz [numPaginas][numReferencias];
+			// Llena la matriz
+			paginas = new int [numPaginas];
+			matriz = new int *[numPaginas];
+			   for (int i = 0;i < numPaginas;i++ ){
+				   matriz[i]= new int [numReferencias];
+			   }
+
+
+			iniciarMatriz(matriz);
+			/* Imprime la matriz */
+		}else{
+			printf("Gracias, vuelva pronto\n");
+		}
+	}while(opc!=4);
+	system("PAUSE");
+}
 
