@@ -15,16 +15,18 @@ int **matriz,*paginas,*fallos;
 
 void LRU(int numPaginas,int numReferencias){
 	/* Creamos la matriz que representa la memoria asignada */
-	matriz = new int[numPaginas];
+	matriz = new int *[numPaginas];
 	for (int i = 0; i < numPaginas; i++){
 		matriz[i] = new int[numReferencias];
 	}
 	/* Seguidamente creamos las referencias que vayamos a ingresar */
-	paginas = new int[numPaginas];
+	paginas = new int[numReferencias];
 	/* Adicional, también creamos el vector para manejar los fallos */
-	fallos = new int[numPaginas];//
-	/* Insertamos las referencias
+	fallos = new int[numReferencias];
+	/* Insertamos las referencias*/
+	insertarReferencias(paginas,numReferencias);
 	imprimeMatriz(matriz,numPaginas,numReferencias);
+
 }
 
 

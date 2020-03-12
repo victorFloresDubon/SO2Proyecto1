@@ -10,6 +10,7 @@
 
 
 void imprimeMatriz(int **mat, int numPaginas, int numReferencias);
+void insertarReferencias(int *referencias, int numReferencias);
 
 
 #endif /* UTILIDADESALGORITMOS_H_ */

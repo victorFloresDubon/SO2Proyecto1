@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string.h>
 #include <stdlib.h>
+#include "AlgoritmosReemplazo.h"
 
 using namespace std;
 /* No. de marcos de página. */
@@ -82,6 +83,7 @@ int main() {
 	printf("Ingrese el Numero de referencias que desea -> ");
 	scanf("%d", &numReferencias);
 	printf("\n");
+	LRU(numPaginas,numReferencias);
 	//int matriz [numPaginas][numReferencias];
 	// Llena la matriz
     paginas = new int [numPaginas];

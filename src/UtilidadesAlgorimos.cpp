@@ -37,8 +37,9 @@ void imprimeMatriz(int **mat, int numPaginas, int numReferencias){
 void insertarReferencias(int *referencias, int numReferencias){
 	for(int i = 0; i < numReferencias; i++){
 		printf("Inserte la referencia No. %d -> ",i+1);
-		scanf("%d",referencias[i]);
+		scanf("%d",&referencias[i]);
 	}
 }
+
 
 
