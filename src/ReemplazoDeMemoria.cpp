@@ -1,9 +1,9 @@
 //============================================================================
-// Name        : ReemplazoDeMemoria.cpp
+// Name        : Algoritmos de Reemplazo de Memoria
 // Author(s)   : Selvin Castellanos, Victor Flores
 // Version     :
 // Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
+// Description : Proyecto I Sistemas Operativos II
 //============================================================================
 
 #include <iostream>
