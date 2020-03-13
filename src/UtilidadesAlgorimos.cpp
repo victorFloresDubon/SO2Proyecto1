@@ -1,11 +1,11 @@
 /*
- * Acá definimos las utilidades que nos permitirán controlar
+ * AcÃ¡ definimos las utilidades que nos permitirï¿½n controlar
  * las entradas y las salidas de los datos que vayamos ingresando.
  */
 #include <iostream>
 #include <stdio.h>
 /* Definimos constantes para identificar el tipo de algoritmo a los cuales
- * serán sometidos algunos métodos en este programa
+ * serï¿½n sometidos algunos mï¿½todos en este programa
  */
 const int OPT = 1;
 const int FIFO = 2;
@@ -13,11 +13,11 @@ const int LRU = 3;
 using namespace std;
 
 /*
- * Método para imprimir la matriz en pantalla.
+ * Mï¿½todo para imprimir la matriz en pantalla.
  *
  * mat        -> Apuntador a la matriz actual.
- * numPaginas -> No. de marcos de página, esto servirá como límite para las filas.
- * numPaginas -> No. de referencias, esto servirá como límite para las columnas.
+ * numPaginas -> No. de marcos de pï¿½gina, esto servirï¿½ como lï¿½mite para las filas.
+ * numPaginas -> No. de referencias, esto servirï¿½ como lï¿½mite para las columnas.
  */
 void imprimeMatriz(int **mat, int numPaginas, int numReferencias){
 	for(int i = 0; i < numPaginas; i++){
@@ -34,10 +34,10 @@ void imprimeMatriz(int **mat, int numPaginas, int numReferencias){
 	}
 }
 /*
- * Método que nos permite ir insertando las referencias.
+ * Mï¿½todo que nos permite ir insertando las referencias.
  *
  * referencias    -> Vector al cual insertaremos dichas referencias.
- * numReferencias ->  No. de referencias, esto servirá como límite para el bucle.
+ * numReferencias ->  No. de referencias, esto servirï¿½ como lï¿½mite para el bucle.
  */
 void insertarReferencias(int *referencias, int numReferencias){
 	for(int i = 0; i < numReferencias; i++){
@@ -47,8 +47,8 @@ void insertarReferencias(int *referencias, int numReferencias){
 }
 
 /**
- * Operación que inicia la matriz en la primera columna
- * con los valores: 1, 2, 3, 4.  De lo contrario las llenará con valor -1
+ * Operaciï¿½n que inicia la matriz en la primera columna
+ * con los valores: 1, 2, 3, 4.  De lo contrario las llenarï¿½ con valor -1
  */
 void iniciarMatriz(int **mat, int numPaginas, int numReferencias){
 	for(int i = 0; i < numPaginas; i++){
@@ -76,8 +76,8 @@ void iniciarMatriz(int **mat, int numPaginas, int numReferencias){
 	}
 }
 
-/* Esta función nos permite buscar una página dentro de las referancias que hemos
- * ingresado previamente, debemos especificar el tipo de búsqueda para cada algoritmo
+/* Esta funciï¿½n nos permite buscar una pï¿½gina dentro de las referancias que hemos
+ * ingresado previamente, debemos especificar el tipo de bï¿½squeda para cada algoritmo
  * Si es:
  *  Optimo -> 1
  *  FIFO   -> 2
