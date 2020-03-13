@@ -77,6 +77,7 @@ void menu(){
 			printf("Algoritmo Ultimo Recientemente Usado (LRU)\n");
 			printf("==================================================\n");
 			insertarReferencias();
+			//imprimirMatriz();
 			break;
 		}
 	}while(opc!=4);
@@ -87,14 +88,16 @@ void menu(){
 /* Método para imprimir la matriz en pantalla */
 void imprimirMatriz(){
 	//Imprime el vector de las referencias
-	printf("REFERENCIAS -> ");
+	printf("REFERENCIAS ->\t");
 	for (int i = 0; i < numReferencias; i++){
-		printf("%d\t",referencias[i]);
+		if (i != 0){
+			printf("%d\t",referencias[i]);
+		}
 	}
 	printf("\n");
 	//Imprime la matriz
 	for (int i = 0; i < numPaginas; i++){
-		printf("PAGINA %d -> ",i+1);
+		printf(" PAGINA %d ->\t",i+1);
 		for (int j = 0; j < numReferencias; j++){
 			if (matriz[i][j] == -1){ // imprime blanco para no mostrar el -1
 				printf(" \t");
@@ -158,8 +161,7 @@ void insertarReferencias(){
 	for(int i = 0; i < numReferencias; i++){
 		printf("Inserte la referencia No. %d -> ",i+1);
 		scanf("%d",&referencias[i]);
-		printf("\n");
-		imprimirMatriz();
+		//printf("\n");
 	}
+	imprimirMatriz();
 }
-
