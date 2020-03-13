@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <stdlib.h>
-#include "UtilidadesAlgoritmos.h"
+
 
 const int OPT = 1;   /* Constante para identificar el algoritmo óptimo */
 const int FIFO = 2;  /* Constante para identificar el algoritmo FIFO */
@@ -16,7 +16,7 @@ using namespace std;
 
 int numPaginas;        /* No. de marcos de página. */
 int numReferencias;    /* No. de referencias. */
-int *referencias       /* Arreglo que contendrá las referencias ingresadas */
+int *referencias;      /* Arreglo que contendrá las referencias ingresadas */
 int *fallos;           /* Arreglo para manejar los fallos que se generen */
 int **matriz;          /* Matriz que simulará la memoria dinámica */
 
@@ -38,6 +38,7 @@ void algoritmosReemplazo(){
 	referencias = new int[numReferencias];
 	// Construiremos el arreglo de fallos
 	fallos = new int[numReferencias];
+
 }
 
 /* Método para imprimir la matriz en pantalla */
@@ -68,4 +69,44 @@ bool buscar(int paginaActual){
 	return encontrado;
 }
 
+/**
+ * Operación que inicia la matriz en la primera columna
+ * con los valores: 1, 2, 3, 4.  De lo contrario las llenar� con valor -1
+ */
+void iniciarMatriz(){
+	for(int i = 0; i < numPaginas; i++){
+		for(int j = 0; j < numReferencias; j++){
+			// Inicia los valores en la referencia 1
+			if (j == 0){
+				switch(i){
+				case 0:
+					matriz[i][j] = 1;
+					break;
+				case 1:
+					matriz[i][j] = 2;
+					break;
+				case 2:
+					matriz[i][j] = 3;
+					break;
+				case 3:
+					matriz[i][j] = 4;
+					break;
+				}
+			}else{
+				matriz[i][j] = -1;
+			}
+		}
+	}
+}
+
+/*
+ * Método que nos permite ir insertando las referencias.
+ *
+ */
+void insertarReferencias(){
+	for(int i = 0; i < numReferencias; i++){
+		printf("Inserte la referencia No. %d -> ",i+1);
+		scanf("%d",&referencias[i]);
+	}
+}
 
