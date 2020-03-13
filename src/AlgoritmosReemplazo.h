@@ -6,8 +6,9 @@
 #ifndef ALGORITMOSREEMPLAZO_H_
 #define ALGORITMOSREEMPLAZO_H_
 
-void opt(int numPaginas,int numReferencias);
-void fifo(int numPaginas,int numReferencias);
-void lru(int numPaginas,int numReferencias);
+const int OPT = 1;   /* Constante para identificar el algoritmo óptimo */
+const int FIFO = 2;  /* Constante para identificar el algoritmo FIFO */
+const int LRU = 3;   /* Constante para identificar el algoritmo LRU */
+void algoritmosReemplazo();
 
 #endif /* ALGORITMOSREEMPLAZO_H_ */

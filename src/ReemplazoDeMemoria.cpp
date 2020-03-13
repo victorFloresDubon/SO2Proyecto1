@@ -1,5 +1,5 @@
 //============================================================================
-// Name        : Algoritmos de Reemplazo de Memoria
+// Name        : Gestión de Memoria y Paginación
 // Author(s)   : Selvin Castellanos, Victor Flores
 // Version     :
 // Copyright   : Your copyright notice
@@ -14,28 +14,11 @@
 
 using namespace std;
 
-void menu(){
-
-	int opc;
-	do{
-		printf("Algoritmos de Reemplazo de paginas\n");
-		printf("===================================\n");
-		printf("\n");
-		printf("Escoja el algoritmo que desea ejecutar\n");
-		printf("1.\t\t Optimo\n");
-		printf("2.\t\t FIFO\n");
-		printf("3.\t\t LRU\n");
-		printf("4.\t\t Salir\n");
-		printf("-> ");
-		scanf("%d",&opc);
-	}while(opc!=4);
-	system("PAUSE");
-}
 
 
 
 int main() {
-	menu();
+	algoritmosReemplazo();
 	return 0;
 }
 

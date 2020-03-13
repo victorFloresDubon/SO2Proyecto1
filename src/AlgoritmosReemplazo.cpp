@@ -5,14 +5,16 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include "AlgoritmosReemplazo.h"
 
-
-const int OPT = 1;   /* Constante para identificar el algoritmo óptimo */
-const int FIFO = 2;  /* Constante para identificar el algoritmo FIFO */
-const int LRU = 3;   /* Constante para identificar el algoritmo LRU */
 
 using namespace std;
 
+void menu();
+void imprimirMatriz();
+bool buscar(int paginaActual);
+void iniciarMatriz();
+void insertarReferencias();
 
 int numPaginas;        /* No. de marcos de página. */
 int numReferencias;    /* No. de referencias. */
@@ -22,7 +24,6 @@ int **matriz;          /* Matriz que simulará la memoria dinámica */
 
 
 void algoritmosReemplazo(){
-	int opcion;
 	printf("Ingrese el Numero de paginas que desea -> ");
 	scanf("%d", &numPaginas);
 	printf("\n");
@@ -34,15 +35,64 @@ void algoritmosReemplazo(){
 		for(int i = 0; i < numPaginas; i++){ // Columnas
 			matriz[i] = new int[numReferencias];
 		}
+	iniciarMatriz();
 	// Construiremos el arreglo de referencias que ingresará el usuario
 	referencias = new int[numReferencias];
 	// Construiremos el arreglo de fallos
 	fallos = new int[numReferencias];
 
+	menu();
+}
+
+/* Muestra el menú de selección */
+void menu(){
+	int opc;
+	do{
+		system("cls");
+		printf("Algoritmos de Reemplazo de paginas\n");
+		printf("===================================\n");
+		printf("\n");
+		printf("Escoja el algoritmo que desea ejecutar\n");
+		printf("\t1. Optimo\n");
+		printf("\t2. FIFO\n");
+		printf("\t3. LRU\n");
+		printf("\t4. Salir\n");
+		printf("\t-> ");
+		scanf("%d",&opc);
+		switch(opc){
+		case OPT: //Algoritmo Optimo
+			system("cls");
+			printf("Algoritmo Optimo\n");
+			printf("===============================\n");
+			insertarReferencias();
+			break;
+		case FIFO:
+			system("cls");
+			printf("\t\tAlgoritmo Ultimo en Entrar Primero en Salir (FIFO)\n");
+			printf("======================================================\n");
+			insertarReferencias();
+			break;
+		case LRU:
+			system("cls");
+			printf("Algoritmo Ultimo Recientemente Usado (LRU)\n");
+			printf("==================================================\n");
+			insertarReferencias();
+			break;
+		}
+	}while(opc!=4);
+	printf("Gracias, vuelva pronto!\n");
+	system("PAUSE");
 }
 
 /* Método para imprimir la matriz en pantalla */
-void imprimeMatriz(){
+void imprimirMatriz(){
+	//Imprime el vector de las referencias
+	printf("REFERENCIAS -> ");
+	for (int i = 0; i < numReferencias; i++){
+		printf("%d\t",referencias[i]);
+	}
+	printf("\n");
+	//Imprime la matriz
 	for (int i = 0; i < numPaginas; i++){
 		printf("PAGINA %d -> ",i+1);
 		for (int j = 0; j < numReferencias; j++){
@@ -54,6 +104,7 @@ void imprimeMatriz(){
 		}
 		printf("\n");
 	}
+	printf("\n");
 }
 
 /* Función para encontrar una referencia dentro de una página (LRU)*/
@@ -107,6 +158,8 @@ void insertarReferencias(){
 	for(int i = 0; i < numReferencias; i++){
 		printf("Inserte la referencia No. %d -> ",i+1);
 		scanf("%d",&referencias[i]);
+		printf("\n");
+		imprimirMatriz();
 	}
 }
 
