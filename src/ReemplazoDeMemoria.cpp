@@ -14,9 +14,6 @@
 
 using namespace std;
 
-
-
-
 int main() {
 	algoritmosReemplazo();
 	return 0;
