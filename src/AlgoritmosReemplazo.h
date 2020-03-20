@@ -13,13 +13,14 @@ void algoritmosReemplazo();
 void menu();
 void imprimirMatriz();
 bool buscar(int paginaActual, int tipo);
+void reemplazar(int refActual, int tipo, bool encontrado);
 void iniciarMatriz();
 void insertarReferencias();
 void iniciarFallos();
 void copiarEnFila(int pagActual,int refActual);
 int menosUsadoRecientemente(int refActual);
+void optimo();
 void fifo();
 void lru();
-
 
 #endif /* ALGORITMOSREEMPLAZO_H_ */

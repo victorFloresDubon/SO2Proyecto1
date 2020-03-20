@@ -209,23 +209,40 @@ void reemplazar(int refActual, int tipo, bool encontrado = false){
 	case OPT:
 		break;
 	case FIFO:
+		libre = false;
 		// Si no se encontró la referencia entonces aplica el reemplazo
 		// desde la referencia actual.
 		if (!encontrado){
-			for(int j = refActual; j < numReferencias; j++){
-				matriz[pagSiguiente][j+1] = referencias[refActual];
-				//Registra el fallo de la memoria
-				fallos[refActual+1] = 0;
+			// Si existe un espacio libre entonces llena la fila
+			for(i = 0; i < numPaginas; i++){
+				if(matriz[i][refActual+1] == -1){
+					libre = true;
+					break;
+				}
 			}
-			// Mueve a la siguiente página
-			pagSiguiente++;
-			// Si ya se recorrió todas las páginas volvemos a la primera
-			if(pagSiguiente==numPaginas){
-				pagSiguiente = 0;
+			if (libre){
+				// Si encuentra un marco libre lo copia en la fila
+				for(int j = refActual; j < numReferencias; j++){
+					matriz[i][j+1] = referencias[refActual];
+				}
+
+			}else{
+				for(int j = refActual; j < numReferencias; j++){
+					matriz[pagSiguiente][j+1] = referencias[refActual];
+				}
+				// Mueve a la siguiente página
+				pagSiguiente++;
+				// Si ya se recorrió todas las páginas volvemos a la primera
+				if(pagSiguiente==numPaginas){
+					pagSiguiente = 0;
+				}
 			}
+			//Registra el fallo de la memoria
+			fallos[refActual+1] = 0;
 		}
 		break;
 	case LRU:
+		libre = false;
 		//Buscamos un espacio libre en las páginas
 		for(i = 0; i < numPaginas; i++){
 			if(matriz[i][refActual+1] == -1){
@@ -286,6 +303,10 @@ int menosUsadoRecientemente(int refActual){
 //============================================================================//
 //                          ALGORITMOS DE REEMPLAZO                           //
 //============================================================================//
+/* Algoritmo Óptimo */
+void optimo(){
+
+}
 /* Algoritmo Primero en Entrar, Primero en Salir (First In First Out, FIFO) */
 void fifo(){
 	for(int j = 0; j < numReferencias; j++){
