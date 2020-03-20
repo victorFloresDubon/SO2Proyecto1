@@ -169,7 +169,6 @@ void imprimirMatriz(){
 	printf("\n");
 	//Imprime el vector de los fallos
 	printf("FALLOS ->\t");
-	//printf("-\t");
 	for (int i = 0; i < numReferencias+1; i++){
 		if(fallos[i] == -1 ){
 			printf("-\t");
@@ -219,10 +218,11 @@ void reemplazar(int refActual){
 			libre = true;
 		}
 	}
-	//Si encontramos un espacio libre entonces
-	// llenaremos la fila entera con la referencia ingresada
+	// Si encontramos un espacio libre entonces
+	// llenaremos la fila entera con la referencia ingresada,
+	// a la página se le quirará -1 para evitar desbordamiento.
 	if (libre){
-		copiarEnFila(i,refActual);
+		copiarEnFila(i-1,refActual);
 		fallos[refActual+1] = 0;
 	}else{
 		// Sino reemplazará la página menos usada recientemente a partir
@@ -251,7 +251,7 @@ int menosUsadoRecientemente(int refActual){
 		// Retrocede en las referencias pasadas a partir de la actual
 		for(int j = refActual; j >= 0; j--){
 			if(matriz[i][refActual+1] == referencias[j]){
-				// Guardo en memoria la distancia entre la referencia actual
+				// Guarda en memoria la distancia entre la referencia actual
 				// y la anterior usada.
 				distancia[i] = refActual-j;
 				break;

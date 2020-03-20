@@ -21,7 +21,4 @@ int menosUsadoRecientemente(int refActual);
 void lru();
 
 
-
-
-
 #endif /* ALGORITMOSREEMPLAZO_H_ */
