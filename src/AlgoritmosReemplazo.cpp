@@ -35,13 +35,13 @@ void algoritmosReemplazo(){
 	// Construiremos las matriz con los datos dados por el usuario
 	matriz = new int *[numPaginas]; // Filas
 		for(int i = 0; i < numPaginas; i++){ // Columnas
-			matriz[i] = new int[numReferencias];
+			matriz[i] = new int[numReferencias+1];
 		}
 	iniciarMatriz();
 	// Construiremos el arreglo de referencias que ingresará el usuario
 	referencias = new int[numReferencias];
 	// Construiremos el arreglo de fallos e iniciamos el vector
-	fallos = new int[numReferencias];
+	fallos = new int[numReferencias+1];
 	iniciarFallos();
 	menu();
 }
@@ -79,7 +79,7 @@ void menu(){
 			printf("Algoritmo Ultimo Recientemente Usado (LRU)\n");
 			printf("==================================================\n");
 			insertarReferencias();
-			system("PAUSE");
+			//system("PAUSE");
 			break;
 		}
 	}while(opc!=4);
@@ -91,7 +91,7 @@ void menu(){
  * Inicia el vector de fallos en -1
  */
 void iniciarFallos(){
-	for(int i = 0; i < numReferencias; i++){
+	for(int i = 0; i < numReferencias+1; i++){
 		fallos[i] = -1;
 	}
 }
@@ -102,7 +102,7 @@ void iniciarFallos(){
  */
 void iniciarMatriz(){
 	for(int i = 0; i < numPaginas; i++){
-		for(int j = 0; j < numReferencias; j++){
+		for(int j = 0; j < numReferencias+1; j++){
 			// Inicia los valores en la referencia 1
 			if (j == 0){
 				switch(i){
@@ -134,8 +134,9 @@ void insertarReferencias(){
 	for(int i = 0; i < numReferencias; i++){
 		printf("Inserte la referencia No. %d -> ",i+1);
 		scanf("%d",&referencias[i]);
-		printf("\n");
+		//printf("\n");
 	}
+	printf("\n");
 	imprimirMatriz();
 }
 
@@ -154,7 +155,7 @@ void imprimirMatriz(){
 	//Imprime la matriz
 	for (int i = 0; i < numPaginas; i++){
 		printf(" PAGINA %d ->\t",i+1);
-		for (int j = 0; j < numReferencias; j++){
+		for (int j = 0; j < numReferencias+1; j++){
 			if (matriz[i][j] == -1){ // imprime blanco para no mostrar el -1
 				printf(" \t");
 			}else{
@@ -166,8 +167,8 @@ void imprimirMatriz(){
 	printf("\n");
 	//Imprime el vector de los fallos
 	printf("FALLOS ->\t");
-	printf("-\t");
-	for (int i = 0; i < numReferencias; i++){
+	//printf("-\t");
+	for (int i = 0; i < numReferencias+1; i++){
 		if(fallos[i] == -1 ){
 			printf("-\t");
 		}else{
@@ -176,6 +177,7 @@ void imprimirMatriz(){
 	}
 
 	printf("\n");
+	system("PAUSE");
 }
 
 /* Función para encontrar una referencia dentro de una página, dependiendo el tipo de
@@ -234,14 +236,14 @@ void reemplazar(int refActual){
 //============================================================================//
 //                          ALGORITMOS DE REEMPLAZO                           //
 //============================================================================//
-/* Algoritmo Menos Usado Recientemente (LRU) */
+/* Algoritmo Menos Usado Recientemente (Least Recently Used, LRU) */
 void lru(){
-	for(int j = 0; j < numReferencias; j++){
+	for(int j = 1; j < numReferencias+1; j++){
 		// Si no lo encuentra entonces lo reemplaza
 		if(!buscar(j,LRU)){
 			reemplazar(j);
 		}else{
-			copiarColumnaAnterior(j+1);
+			copiarColumnaAnterior(j);
 		}
 	}
 }
