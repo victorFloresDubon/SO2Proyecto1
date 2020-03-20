@@ -176,32 +176,22 @@ void imprimirMatriz(){
 			printf("X\t");
 		}
 	}
-
 	printf("\n");
 	system("PAUSE");
 }
 
-/* Función para encontrar una referencia dentro de una página, dependiendo el tipo de
- * algoritmo que se le indique
+/* Función para encontrar una referencia dentro de una página.
  *
  */
-bool buscar(int refActual, int tipo){
+bool buscar(int refActual){
 	bool encontrado = false;
-	switch(tipo){
-	case OPT:
-		break;
-	case FIFO:
-		break;
-	case LRU:
-        //Recorre las páginas
-		for(int i = 0; i < numPaginas; i++){
-			// Si la referencia se encuentra en alguna de las páginas
-			// la bandera cambia su estado a verdadero.
-			if(referencias[refActual] == matriz[i][refActual+1]){
-				encontrado = true;
-			}
+	//Recorre las páginas
+	for(int i = 0; i < numPaginas; i++){
+		// Si la referencia se encuentra en alguna de las páginas
+		// la bandera cambia su estado a verdadero.
+		if(referencias[refActual] == matriz[i][refActual+1]){
+			encontrado = true;
 		}
-		break;
 	}
 	return encontrado;
 }
@@ -255,6 +245,8 @@ int menosUsadoRecientemente(int refActual){
 				// y la anterior usada.
 				distancia[i] = refActual-j;
 				break;
+			}else{
+				distancia[i] = j;
 			}
 		}
 	}
@@ -273,7 +265,7 @@ int menosUsadoRecientemente(int refActual){
 void lru(){
 	for(int j = 0; j < numReferencias; j++){
 		// Si no lo encuentra entonces lo reemplaza
-		if(!buscar(j,LRU)){
+		if(!buscar(j)){
 			reemplazar(j);
 		}
 	}
