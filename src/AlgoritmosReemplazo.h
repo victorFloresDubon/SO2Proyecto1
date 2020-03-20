@@ -18,6 +18,7 @@ void insertarReferencias();
 void iniciarFallos();
 void copiarEnFila(int pagActual,int refActual);
 int menosUsadoRecientemente(int refActual);
+void fifo();
 void lru();
 
 

@@ -15,8 +15,10 @@ int numReferencias;    /* No. de referencias. */
 int *referencias;      /* Arreglo que contendrá las referencias ingresadas */
 int *fallos;           /* Arreglo para manejar los fallos que se generen */
 int **matriz;          /* Matriz que simulará la memoria dinámica */
-int *distancia;        /* Arrelgo que servirá como contador de distancia entra páginas,
-                          este servirá para el LRU*/
+int *distancia;        /* Arreglo contador de distancia entre páginas para LRU*/
+int pagSiguiente = 0;  /* Variable que inicia en la primera página para el algoritmo FIFO */
+bool libre = false;    /* Bandera para indicar que un bloque se encuentra libre */
+
 
 void algoritmosReemplazo(){
 	do{
@@ -72,9 +74,10 @@ void menu(){
 			break;
 		case FIFO:
 			system("cls");
-			printf("\t\tAlgoritmo Ultimo en Entrar Primero en Salir (FIFO)\n");
+			printf("Algoritmo Ultimo en Entrar Primero en Salir (FIFO)\n");
 			printf("======================================================\n");
 			insertarReferencias();
+			fifo();
 			break;
 		case LRU:
 			system("cls");
@@ -197,29 +200,51 @@ bool buscar(int refActual){
 }
 /*
  * Método que reemplazará el valor encontrado, dependiendo el tipo de algoritmo
- * tomará un comportamiento distinto
+ * tomará un comportamiento distinto.  Además de agregar una bandera con valor
+ * por defecto en falso, esto servirá para el algoritmo FIFO
  */
-void reemplazar(int refActual){
-	bool libre = false;
+void reemplazar(int refActual, int tipo, bool encontrado = false){
 	int i;
-	//Buscamos un espacio libre en las páginas
-	for(i = 0; i < numPaginas; i++){
-		if(matriz[i][refActual+1] == -1){
-			libre = true;
+	switch(tipo){
+	case OPT:
+		break;
+	case FIFO:
+		// Si no se encontró la referencia entonces aplica el reemplazo
+		// desde la referencia actual.
+		if (!encontrado){
+			for(int j = refActual; j < numReferencias; j++){
+				matriz[pagSiguiente][j+1] = referencias[refActual];
+				//Registra el fallo de la memoria
+				fallos[refActual+1] = 0;
+			}
+			// Mueve a la siguiente página
+			pagSiguiente++;
+			// Si ya se recorrió todas las páginas volvemos a la primera
+			if(pagSiguiente==numPaginas){
+				pagSiguiente = 0;
+			}
 		}
-	}
-	// Si encontramos un espacio libre entonces
-	// llenaremos la fila entera con la referencia ingresada,
-	// a la página se le quirará -1 para evitar desbordamiento.
-	if (libre){
-		copiarEnFila(i-1,refActual);
+		break;
+	case LRU:
+		//Buscamos un espacio libre en las páginas
+		for(i = 0; i < numPaginas; i++){
+			if(matriz[i][refActual+1] == -1){
+				libre = true;
+			}
+		}
+		// Si encontramos un espacio libre entonces
+		// llenaremos la fila entera con la referencia ingresada,
+		// a la página se le quirará -1 para evitar desbordamiento.
+		if (libre){
+			copiarEnFila(i-1,refActual);
+		}else{
+			// Sino reemplazará la página menos usada recientemente a partir
+			// de la referencia actual.
+			copiarEnFila(menosUsadoRecientemente(refActual),refActual);
+		}
+		//Registra el fallo de la memoria
 		fallos[refActual+1] = 0;
-	}else{
-		// Sino reemplazará la página menos usada recientemente a partir
-		// de la referencia actual.
-		copiarEnFila(menosUsadoRecientemente(refActual),refActual);
-		//Registra el fallo de memoria
-		fallos[refActual+1] = 0;
+		break;
 	}
 }
 /*
@@ -261,15 +286,20 @@ int menosUsadoRecientemente(int refActual){
 //============================================================================//
 //                          ALGORITMOS DE REEMPLAZO                           //
 //============================================================================//
+/* Algoritmo Primero en Entrar, Primero en Salir (First In First Out, FIFO) */
+void fifo(){
+	for(int j = 0; j < numReferencias; j++){
+		reemplazar(j,FIFO,buscar(j));
+	}
+	imprimirMatriz();
+}
 /* Algoritmo Menos Usado Recientemente (Least Recently Used, LRU) */
 void lru(){
 	for(int j = 0; j < numReferencias; j++){
 		// Si no lo encuentra entonces lo reemplaza
 		if(!buscar(j)){
-			reemplazar(j);
+			reemplazar(j,LRU);
 		}
 	}
 	imprimirMatriz();
 }
-
-
