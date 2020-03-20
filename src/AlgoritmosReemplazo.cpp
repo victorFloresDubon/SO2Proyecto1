@@ -10,17 +10,6 @@
 
 using namespace std;
 
-void menu();
-void imprimirMatriz();
-bool buscar(int paginaActual, int tipo);
-void iniciarMatriz();
-void insertarReferencias();
-void iniciarFallos();
-void copiarEnFila(int pagActual,int refActual);
-int menosUsadoRecientemente(int refActual);
-void lru();
-
-
 int numPaginas;        /* No. de marcos de página. */
 int numReferencias;    /* No. de referencias. */
 int *referencias;      /* Arreglo que contendrá las referencias ingresadas */
@@ -30,15 +19,24 @@ int *distancia;        /* Arrelgo que servirá como contador de distancia entra 
                           este servirá para el LRU*/
 
 void algoritmosReemplazo(){
-	printf("Ingrese el Numero de paginas que desea -> ");
-	scanf("%d", &numPaginas);
+	do{
+		printf("Ingrese el Numero de paginas que desea -> ");
+		scanf("%d", &numPaginas);
+		if(numPaginas <= 0){
+			printf("Debe ingresar numero mayor que cero\n");
+		}
+	}while(numPaginas <= 0);
 	printf("\n");
-	printf("Ingrese el Numero de referencias que desea -> ");
-	scanf("%d", &numReferencias);
+	do{
+		printf("Ingrese el Numero de referencias que desea -> ");
+		scanf("%d", &numReferencias);
+	}while(numReferencias <= 0);
 	printf("\n");
 	// Construiremos las matriz con los datos dados por el usuario
 	matriz = new int *[numPaginas]; // Filas
 		for(int i = 0; i < numPaginas; i++){ // Columnas
+			// añadimos +1 a las columnas debido a la columna inicializada
+			// que se manejará, esto va para la matriz como para los fallos
 			matriz[i] = new int[numReferencias+1];
 		}
 	iniciarMatriz();
@@ -82,6 +80,7 @@ void menu(){
 			system("cls");
 			printf("Algoritmo Ultimo Recientemente Usado (LRU)\n");
 			printf("==================================================\n");
+			// Iniciamos el contador de distancias en este case en base al No. de páginas.
 			distancia = new int[numPaginas];
 			insertarReferencias();
 			lru();
@@ -108,25 +107,23 @@ void iniciarFallos(){
 void iniciarMatriz(){
 	for(int i = 0; i < numPaginas; i++){
 		for(int j = 0; j < numReferencias+1; j++){
-			// Inicia los valores en la referencia 1
-			//if (j == 0){
-				switch(i){
-				case 0:
-					matriz[i][j] = 1;
-					break;
-				case 1:
-					matriz[i][j] = 2;
-					break;
-				case 2:
-					matriz[i][j] = 3;
-					break;
-				case 3:
-					matriz[i][j] = 4;
-					break;
-				}
-			//}else{
-			//	matriz[i][j] = -1;
-			//}
+			// Inicia los valores en las páginas respectivas
+			switch(i){
+			case 0:
+				matriz[i][j] = 1;
+				break;
+			case 1:
+				matriz[i][j] = 2;
+				break;
+			case 2:
+				matriz[i][j] = 3;
+				break;
+			case 3:
+				matriz[i][j] = 4;
+				break;
+			default:
+				matriz[i][j] = -1;
+			}
 		}
 	}
 }
@@ -214,12 +211,26 @@ bool buscar(int refActual, int tipo){
  * tomará un comportamiento distinto
  */
 void reemplazar(int refActual){
-	// Reemplazará la página menos usada recientemente a partir
-	// de la referencia actual.
-	copiarEnFila(menosUsadoRecientemente(refActual),refActual);
-	//Registra el fallo de memoria
-	fallos[refActual+1] = 0;
-
+	bool libre = false;
+	int i;
+	//Buscamos un espacio libre en las páginas
+	for(i = 0; i < numPaginas; i++){
+		if(matriz[i][refActual+1] == -1){
+			libre = true;
+		}
+	}
+	//Si encontramos un espacio libre entonces
+	// llenaremos la fila entera con la referencia ingresada
+	if (libre){
+		copiarEnFila(i,refActual);
+		fallos[refActual+1] = 0;
+	}else{
+		// Sino reemplazará la página menos usada recientemente a partir
+		// de la referencia actual.
+		copiarEnFila(menosUsadoRecientemente(refActual),refActual);
+		//Registra el fallo de memoria
+		fallos[refActual+1] = 0;
+	}
 }
 /*
  * Copia la fila desde la página y marco de referencia actual
