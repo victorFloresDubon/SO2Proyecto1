@@ -16,14 +16,18 @@ bool buscar(int paginaActual, int tipo);
 void iniciarMatriz();
 void insertarReferencias();
 void iniciarFallos();
+void copiarEnFila(int pagActual,int refActual);
+int menosUsadoRecientemente(int refActual);
+void lru();
+
 
 int numPaginas;        /* No. de marcos de página. */
 int numReferencias;    /* No. de referencias. */
 int *referencias;      /* Arreglo que contendrá las referencias ingresadas */
 int *fallos;           /* Arreglo para manejar los fallos que se generen */
 int **matriz;          /* Matriz que simulará la memoria dinámica */
-int *distacia;         /* Arrelgo que tendrá el No. de referencia a tomar para reemplazo
-                          en el algoritmo LRU*/
+int *distancia;        /* Arrelgo que servirá como contador de distancia entra páginas,
+                          este servirá para el LRU*/
 
 void algoritmosReemplazo(){
 	printf("Ingrese el Numero de paginas que desea -> ");
@@ -78,8 +82,9 @@ void menu(){
 			system("cls");
 			printf("Algoritmo Ultimo Recientemente Usado (LRU)\n");
 			printf("==================================================\n");
+			distancia = new int[numPaginas];
 			insertarReferencias();
-			//system("PAUSE");
+			lru();
 			break;
 		}
 	}while(opc!=4);
@@ -97,14 +102,14 @@ void iniciarFallos(){
 }
 
 /**
- * Operación que inicia la matriz en la primera columna
- * con los valores: 1, 2, 3, 4.  De lo contrario las llenar� con valor -1
+ * Operación que inicia la matriz en todas sus
+ * posiciones en: 1, 2, 3 y 4
  */
 void iniciarMatriz(){
 	for(int i = 0; i < numPaginas; i++){
 		for(int j = 0; j < numReferencias+1; j++){
 			// Inicia los valores en la referencia 1
-			if (j == 0){
+			//if (j == 0){
 				switch(i){
 				case 0:
 					matriz[i][j] = 1;
@@ -119,9 +124,9 @@ void iniciarMatriz(){
 					matriz[i][j] = 4;
 					break;
 				}
-			}else{
-				matriz[i][j] = -1;
-			}
+			//}else{
+			//	matriz[i][j] = -1;
+			//}
 		}
 	}
 }
@@ -137,7 +142,7 @@ void insertarReferencias(){
 		//printf("\n");
 	}
 	printf("\n");
-	imprimirMatriz();
+//	imprimirMatriz();
 }
 
 /* Método para imprimir la matriz en pantalla */
@@ -151,7 +156,7 @@ void imprimirMatriz(){
 			printf("\t");
 		}
 	}
-	printf("\n");
+	printf("\n");printf("\n");
 	//Imprime la matriz
 	for (int i = 0; i < numPaginas; i++){
 		printf(" PAGINA %d ->\t",i+1);
@@ -187,15 +192,16 @@ void imprimirMatriz(){
 bool buscar(int refActual, int tipo){
 	bool encontrado = false;
 	switch(tipo){
-	case 1:
+	case OPT:
 		break;
 	case FIFO:
 		break;
 	case LRU:
+        //Recorre las páginas
 		for(int i = 0; i < numPaginas; i++){
-			// Si la referencia se encuentra en alguna de la pagina actual entonces
-			// cambia la bandera a verdadero
-			if(referencias[refActual] == matriz[i][refActual]){
+			// Si la referencia se encuentra en alguna de las páginas
+			// la bandera cambia su estado a verdadero.
+			if(referencias[refActual] == matriz[i][refActual+1]){
 				encontrado = true;
 			}
 		}
@@ -204,48 +210,63 @@ bool buscar(int refActual, int tipo){
 	return encontrado;
 }
 /*
- * Copia la columna anterior para poder aplicar la búsqueda de cada referencia
- */
-void copiarColumnaAnterior(int refActual){
-	for(int i = 0; i < numPaginas; i++){
-		matriz[i][refActual] = matriz[i][refActual-1];
-	}
-}
-/*
  * Método que reemplazará el valor encontrado, dependiendo el tipo de algoritmo
  * tomará un comportamiento distinto
  */
 void reemplazar(int refActual){
-	bool marcoLibre = false;// Bandera de marco libre para reemplazo
-	int i;
-	for(i = 0; i < numPaginas; i++){
-		// Si el marco es igual a -1 entonces está libre
-		if(matriz[i][refActual] == -1){
-			marcoLibre = true;
-			break;
+	// Reemplazará la página menos usada recientemente a partir
+	// de la referencia actual.
+	copiarEnFila(menosUsadoRecientemente(refActual),refActual);
+	//Registra el fallo de memoria
+	fallos[refActual+1] = 0;
+
+}
+/*
+ * Copia la fila desde la página y marco de referencia actual
+ */
+void copiarEnFila(int pagActual,int refActual){
+	for(int j = refActual; j < numReferencias; j++){
+		matriz[pagActual][j+1] = referencias[refActual];
+	}
+}
+
+/*
+ * Éste método retornará la referencia más antigua en ser liberada
+ */
+int menosUsadoRecientemente(int refActual){
+	int refMasAntigua = 0;
+	// Recorre las páginas
+	for(int i = 0; i < numPaginas; i++){
+		// Retrocede en las referencias pasadas a partir de la actual
+		for(int j = refActual; j >= 0; j--){
+			if(matriz[i][refActual+1] == referencias[j]){
+				// Guardo en memoria la distancia entre la referencia actual
+				// y la anterior usada.
+				distancia[i] = refActual-j;
+				break;
+			}
 		}
 	}
-	// Si no se encontró un marco libre
-	// reemplazará con el más antiguo en ser liberado
-	if(!marcoLibre){
-
-	}else{
-		//copiarColumna(refActual, i);
+	// Compara la distancia de la página más antigua
+	for(int i = 0; i < numPaginas; i++){
+		if(distancia[i]>distancia[refMasAntigua]){
+			refMasAntigua = i;
+		}
 	}
+	return refMasAntigua;
 }
 //============================================================================//
 //                          ALGORITMOS DE REEMPLAZO                           //
 //============================================================================//
 /* Algoritmo Menos Usado Recientemente (Least Recently Used, LRU) */
 void lru(){
-	for(int j = 1; j < numReferencias+1; j++){
+	for(int j = 0; j < numReferencias; j++){
 		// Si no lo encuentra entonces lo reemplaza
 		if(!buscar(j,LRU)){
 			reemplazar(j);
-		}else{
-			copiarColumnaAnterior(j);
 		}
 	}
+	imprimirMatriz();
 }
 
 
