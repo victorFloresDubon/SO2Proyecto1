@@ -46,6 +46,8 @@ void algoritmosReemplazo(){
 	referencias = new int[numReferencias];
 	// Construiremos el arreglo de fallos e iniciamos el vector
 	fallos = new int[numReferencias+1];
+	// Iniciamos el contador de distancias
+	distancia = new int[numPaginas];
 	iniciarFallos();
 	menu();
 }
@@ -71,6 +73,7 @@ void menu(){
 			printf("Algoritmo Optimo\n");
 			printf("===============================\n");
 			insertarReferencias();
+			optimo();
 			break;
 		case FIFO:
 			system("cls");
@@ -83,8 +86,6 @@ void menu(){
 			system("cls");
 			printf("Algoritmo Ultimo Recientemente Usado (LRU)\n");
 			printf("==================================================\n");
-			// Iniciamos el contador de distancias en este case en base al No. de páginas.
-			distancia = new int[numPaginas];
 			insertarReferencias();
 			lru();
 			break;
@@ -139,10 +140,8 @@ void insertarReferencias(){
 	for(int i = 0; i < numReferencias; i++){
 		printf("Inserte la referencia No. %d -> ",i+1);
 		scanf("%d",&referencias[i]);
-		//printf("\n");
 	}
 	printf("\n");
-//	imprimirMatriz();
 }
 
 /* Método para imprimir la matriz en pantalla */
@@ -207,6 +206,29 @@ void reemplazar(int refActual, int tipo, bool encontrado = false){
 	int i;
 	switch(tipo){
 	case OPT:
+		libre = false;
+		//Buscamos un espacio libre en las páginas
+		for(i = 0; i < numPaginas; i++){
+			if(matriz[i][refActual+1] == -1){
+				libre = true;
+//				break;
+			}
+		}
+		if(libre){
+			copiarEnFila(i-1,refActual);
+		}else{
+			// Verificamos que tengamos las referencias suficientes
+			// para las páginas que manejamos
+			if(!((numReferencias-refActual)<numPaginas)){
+				// Si se cumple, entonces aplicamos el cambio
+				copiarEnFila(masLejanaFuturo(refActual),refActual);
+			}else{
+				// Sino copiaremos la que tiene más tiempo en ejecución
+				copiarEnFila(masLejanaPasado(refActual),refActual);
+			}
+		}
+		//Registra el fallo de la memoria
+		fallos[refActual+1] = 0;
 		break;
 	case FIFO:
 		libre = false;
@@ -247,6 +269,7 @@ void reemplazar(int refActual, int tipo, bool encontrado = false){
 		for(i = 0; i < numPaginas; i++){
 			if(matriz[i][refActual+1] == -1){
 				libre = true;
+//				break;
 			}
 		}
 		// Si encontramos un espacio libre entonces
@@ -257,7 +280,7 @@ void reemplazar(int refActual, int tipo, bool encontrado = false){
 		}else{
 			// Sino reemplazará la página menos usada recientemente a partir
 			// de la referencia actual.
-			copiarEnFila(menosUsadoRecientemente(refActual),refActual);
+			copiarEnFila(masLejanaPasado(refActual),refActual);
 		}
 		//Registra el fallo de la memoria
 		fallos[refActual+1] = 0;
@@ -276,7 +299,7 @@ void copiarEnFila(int pagActual,int refActual){
 /*
  * Éste método retornará la referencia más antigua en ser liberada
  */
-int menosUsadoRecientemente(int refActual){
+int masLejanaPasado(int refActual){
 	int refMasAntigua = 0;
 	// Recorre las páginas
 	for(int i = 0; i < numPaginas; i++){
@@ -300,12 +323,41 @@ int menosUsadoRecientemente(int refActual){
 	}
 	return refMasAntigua;
 }
+/*
+ * Este método retorna la página más lejana a ser referenciada a futuro
+ */
+int masLejanaFuturo(int refActual){
+	int paginaFutura = 0;
+	// Recorre las páginas
+	for (int i = 0; i < numPaginas; i++){
+		// Recorre las referencias a partir de la actual, en adelante
+		for(int j = refActual; j < numReferencias; j++){
+			if(matriz[i][refActual+1] == referencias[j]){
+				// Guarda la distancia entre la referencia futura y la actual
+				distancia[i] = j-refActual;
+				break;
+			}
+		}
+	}
+	//Encuentra la página más distante a futuro
+	for(int i = 0; i < numPaginas; i++){
+		if(distancia[i] > distancia[paginaFutura]){
+			paginaFutura = i;
+		}
+	}
+	return paginaFutura;
+}
 //============================================================================//
 //                          ALGORITMOS DE REEMPLAZO                           //
 //============================================================================//
 /* Algoritmo Óptimo */
 void optimo(){
-
+	for(int j = 0; j < numReferencias; j++){
+		if (!buscar(j)){
+			reemplazar(j,OPT);
+		}
+	}
+	imprimirMatriz();
 }
 /* Algoritmo Primero en Entrar, Primero en Salir (First In First Out, FIFO) */
 void fifo(){
