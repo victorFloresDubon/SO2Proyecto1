@@ -4,9 +4,12 @@
  */
 
 #include <iostream>
+#include <stdio.h>
+#include <conio.h>
 #include <stdlib.h>
+//#include <unistd.h>
+#include <windows.h>
 #include "AlgoritmosReemplazo.h"
-
 
 using namespace std;
 
@@ -21,6 +24,7 @@ bool libre = false;    /* Bandera para indicar que un bloque se encuentra libre 
 
 
 void algoritmosReemplazo(){
+	system("color F");
 	do{
 		printf("Ingrese el Numero de paginas que desea -> ");
 		scanf("%d", &numPaginas);
@@ -41,14 +45,14 @@ void algoritmosReemplazo(){
 			// que se manejará, esto va para la matriz como para los fallos
 			matriz[i] = new int[numReferencias+1];
 		}
-	iniciarMatriz();
 	// Construiremos el arreglo de referencias que ingresará el usuario
 	referencias = new int[numReferencias];
 	// Construiremos el arreglo de fallos e iniciamos el vector
 	fallos = new int[numReferencias+1];
 	// Iniciamos el contador de distancias
 	distancia = new int[numPaginas];
-	iniciarFallos();
+
+	iniciarMatriz();
 	menu();
 }
 
@@ -130,6 +134,7 @@ void iniciarMatriz(){
 			}
 		}
 	}
+	iniciarFallos();
 }
 
 /*
@@ -150,7 +155,9 @@ void imprimirMatriz(){
 	printf("REFERENCIAS ->\t");
 	for (int i = -1; i < numReferencias; i++){
 		if (i != -1){
+			printColor(BCYAN);
 			printf("%d\t",referencias[i]);
+			printColor(NORMAL);
 		}else{
 			printf("\t");
 		}
@@ -163,7 +170,14 @@ void imprimirMatriz(){
 			if (matriz[i][j] == -1){ // imprime blanco para no mostrar el -1
 				printf(" \t");
 			}else{
-				printf("%d\t",matriz[i][j]);
+				// Pintamos el cambio de página
+				if (j != 0 && matriz[i][j] != matriz[i][j-1]){
+					printColor(BROJO);
+					printf("%d\t",matriz[i][j]);
+					printColor(NORMAL);
+				}else{
+					printf("%d\t",matriz[i][j]);
+				}
 			}
 		}
 		printf("\n");
@@ -347,6 +361,10 @@ int masLejanaFuturo(int refActual){
 	}
 	return paginaFutura;
 }
+
+void printColor(int idColor){
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), idColor);
+}
 //============================================================================//
 //                          ALGORITMOS DE REEMPLAZO                           //
 //============================================================================//
@@ -358,6 +376,7 @@ void optimo(){
 		}
 	}
 	imprimirMatriz();
+	iniciarMatriz();
 }
 /* Algoritmo Primero en Entrar, Primero en Salir (First In First Out, FIFO) */
 void fifo(){
@@ -365,6 +384,7 @@ void fifo(){
 		reemplazar(j,FIFO,buscar(j));
 	}
 	imprimirMatriz();
+	iniciarMatriz();
 }
 /* Algoritmo Menos Usado Recientemente (Least Recently Used, LRU) */
 void lru(){
@@ -375,4 +395,5 @@ void lru(){
 		}
 	}
 	imprimirMatriz();
+	iniciarMatriz();
 }
